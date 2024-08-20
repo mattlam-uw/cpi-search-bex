@@ -80,8 +80,60 @@
 						</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
+			</plugin> 
+      <!-- Spotless Plugin -->
+        <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <version>2.43.0</version>
+            <configuration>
+                <java>
+                    <googleJavaFormat/>
+                </java>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>check</goal>
+                        <goal>apply</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+         <!-- Checkstyle Plugin -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.4.0</version>
+            <configuration>
+                <configLocation>checkstyle.xml</configLocation>
+                <failsOnError>true</failsOnError>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
 	</build>
-
+<reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.4.0</version> 
+        <reportSets>
+          <reportSet>
+            <id>checkstyle-report</id>
+            <reports>
+              <report>checkstyle</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
