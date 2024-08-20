@@ -6,7 +6,6 @@ import org.springframework.web.client.RestTemplate;
 
 /** Configuration class for application-specific beans. */
 @Configuration
-// @SuppressWarnings("DesignForExtension") // Use this if Checkstyle supports suppression
 public class AppConfig {
 
   /**

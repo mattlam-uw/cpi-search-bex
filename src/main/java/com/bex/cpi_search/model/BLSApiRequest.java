@@ -34,10 +34,6 @@ public class BLSApiRequest {
   @JsonProperty("aspects")
   private boolean aspects;
 
-  /** The registration key for API access. */
-  @JsonProperty("registrationkey")
-  private String registrationKey;
-
   /**
    * Gets the list of series IDs.
    *
@@ -162,23 +158,5 @@ public class BLSApiRequest {
    */
   public void setAspects(final boolean aspectsValue) {
     this.aspects = aspectsValue;
-  }
-
-  /**
-   * Gets the registration key for API access.
-   *
-   * @return the registration key
-   */
-  public String getRegistrationKey() {
-    return registrationKey;
-  }
-
-  /**
-   * Sets the registration key for API access.
-   *
-   * @param registrationKeyValue the registration key to set
-   */
-  public void setRegistrationKey(final String registrationKeyValue) {
-    this.registrationKey = registrationKeyValue;
   }
 }
