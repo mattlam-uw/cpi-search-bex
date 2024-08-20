@@ -1,13 +1,12 @@
-package com.bex.cpi_search;
-
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class CpiSearchApplicationTests {
+public class CpiSearchApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+  static {
+    Dotenv dotenv = Dotenv.configure().filename(".env.test").load();
+  }
 
+  @Test
+  void contextLoads() {}
 }
