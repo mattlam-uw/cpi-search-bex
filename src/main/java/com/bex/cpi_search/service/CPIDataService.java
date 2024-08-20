@@ -9,6 +9,7 @@ import com.bex.cpi_search.repository.RedisRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +47,6 @@ public class CPIDataService {
     // Create a single API request for all series IDs
     BLSApiRequest request = createBLSApiRequest(year, seriesIds);
     String responseJson = blsApiService.fetchData(request);
-
-    inspectJsonStructure(responseJson);
 
     BLSApiResponse blsResponse = parseBLSApiResponse(responseJson);
 
@@ -105,41 +104,42 @@ public class CPIDataService {
 
     // Configure the ObjectMapper to ignore unknown properties (in case there are
     // extra fields in the JSON)
-    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+   objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+   JsonNode rootNode = objectMapper.readTree(responseJson);
 
  
-    // Deserialize JSON to BLSApiResponse
-    BLSApiResponse response = objectMapper.readValue(responseJson, BLSApiResponse.class);
+      /* Here we SHOULD be instantiating my model classes with just this one line but unfortunately
+      I did not have time to get that working properly. */
+    //BLSApiResponse response = objectMapper.readValue(responseJson, BLSApiResponse.class);
+    
+    
     // Log the deserialized response
+    String status = rootNode.get("status").asText();
+    int responseTime = rootNode.get("responseTime").asInt();
+    List<String> messages = objectMapper.convertValue(rootNode.get("message"), new TypeReference<List<String>>() {});
+    
+    JsonNode resultsNode = rootNode.get("Results");
+    Results results = null;
+    if (resultsNode != null && !resultsNode.isNull()) {
+        results = objectMapper.treeToValue(resultsNode, Results.class);
+    }
+    
+    // Set the extracted values to your BLSApiResponse object
+    BLSApiResponse response = new BLSApiResponse();
+    response.setStatus(status);
+    response.setResponseTime(responseTime);
+    response.setMessage(messages);
+    response.setResults(results);
+
     log.info("Deserialized Response: " + response);
 
-    if (response == null) {
-      log.error("Deserialized response is null");
-    } else {
-      log.info("Results list: " + response.getResults());
-    }
+
+
+    log.info("Results list: " + response.getResults());
 
     return response;
   }
 
-  public void inspectJsonStructure(String jsonString) {
-    try {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(jsonString);
-
-        // Log the entire structure
-        log.info("JSON Structure: " + rootNode.toPrettyString());
-
-        // Optionally, you can inspect specific fields
-        JsonNode resultsNode = rootNode.get("Results");
-        if (resultsNode != null) {
-            log.info("Results Node Structure: " + resultsNode.toPrettyString());
-        }
-
-    } catch (Exception e) {
-        log.error("Failed to inspect JSON structure", e);
-    }
-}
 
   /**
    * Extracts the list of data entries for a given year from the BLSApiResponse.
