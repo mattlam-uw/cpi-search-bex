@@ -44,4 +44,9 @@ public class Footnote {
   public void setText(final String textValue) {
     this.text = textValue;
   }
+
+  @Override
+  public String toString() {
+    return "Footnote{" + "code='" + code + '\'' + ", text='" + text + '\'' + '}';
+  }
 }

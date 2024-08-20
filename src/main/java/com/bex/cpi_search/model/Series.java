@@ -9,7 +9,7 @@ public class Series {
   private String seriesID;
 
   /** The list of data entries associated with the series. */
-  private List<Data> data;
+  private List<DataPoint> data;
 
   /**
    * Gets the unique identifier for the series.
@@ -34,7 +34,7 @@ public class Series {
    *
    * @return the list of data entries
    */
-  public List<Data> getData() {
+  public List<DataPoint> getData() {
     return data;
   }
 
@@ -43,7 +43,12 @@ public class Series {
    *
    * @param dataValue the list of data entries to set
    */
-  public void setData(final List<Data> dataValue) {
+  public void setData(final List<DataPoint> dataValue) {
     this.data = dataValue;
+  }
+
+  @Override
+  public String toString() {
+    return "Series{" + "seriesID='" + seriesID + '\'' + ", data=" + data + '}';
   }
 }

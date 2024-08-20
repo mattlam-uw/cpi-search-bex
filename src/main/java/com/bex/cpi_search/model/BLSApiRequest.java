@@ -1,14 +1,19 @@
 package com.bex.cpi_search.model;
 
+import com.bex.cpi_search.service.BLSApiService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Represents a request to the BLS API for timeseries data. */
 public class BLSApiRequest {
 
+  private static final Logger log = LoggerFactory.getLogger(BLSApiService.class);
+
   /** A list of series IDs to request data for. */
   @JsonProperty("seriesid")
-  private List<String> seriesId;
+  private List<String> seriesIds;
 
   /** The starting year for the data request. */
   @JsonProperty("startyear")
@@ -39,17 +44,20 @@ public class BLSApiRequest {
    *
    * @return the list of series IDs
    */
-  public List<String> getSeriesId() {
-    return seriesId;
+  public List<String> getSeriesIds() {
+    return seriesIds;
   }
 
   /**
    * Sets the list of series IDs.
    *
-   * @param seriesIdValue the list of series IDs to set
+   * @param seriesIdValues the list of series IDs to set
    */
-  public void setSeriesId(final List<String> seriesIdValue) {
-    this.seriesId = seriesIdValue;
+  public void setSeriesIds(final List<String> seriesIdValues) {
+    // Log the values
+    log.info("Series ID values received: " + seriesIdValues);
+    this.seriesIds = seriesIdValues;
+    log.info("Series IDs set to: " + this.seriesIds);
   }
 
   /**
@@ -158,5 +166,27 @@ public class BLSApiRequest {
    */
   public void setAspects(final boolean aspectsValue) {
     this.aspects = aspectsValue;
+  }
+
+  @Override
+  public String toString() {
+    return "BLSApiRequest{"
+        + "seriesId="
+        + seriesIds
+        + ", startYear='"
+        + startYear
+        + '\''
+        + ", endYear='"
+        + endYear
+        + '\''
+        + ", catalog="
+        + catalog
+        + ", calculations="
+        + calculations
+        + ", annualAverage="
+        + annualAverage
+        + ", aspects="
+        + aspects
+        + '}';
   }
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fragments</title>
+</head>
+
+<body>
+
+    <!-- Request Form Fragment -->
+    <div th:fragment="requestForm">
+        <h1>Request Data from BLS API</h1>
+        <form action="#" th:action="@{/request-data}" method="post">
+            <label for="seriesIds">Select Series IDs:</label>
+            <select name="seriesIds" id="seriesIds" multiple>
+                <option th:each="seriesId : ${seriesIds}" th:value="${seriesId}" th:text="${seriesId}"></option>
+            </select>
+
+            <label for="year">Year:</label>
+            <select name="year" id="year">
+                <option th:each="year : ${years}" th:value="${year}" th:text="${year}" th:selected="${selectedYear}">
+                </option>
+            </select>
+
+            <label for="month">Month:</label>
+            <select name="month" id="month">
+                <option th:each="month : ${months}" th:value="${month}" th:text="${month}"
+                    th:selected="${selectedMonth}"></option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Response Fragment -->
+    <div th:fragment="responseData">
+        <div th:if="${response != null}">
+            <h2>Data Results</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Series ID</th>
+                        <th>CPI Value</th>
+                        <th>Footnotes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="entry : ${response}">
+                        <td th:text="${entry.key}"></td>
+                        <td th:text="${entry.value.value}"></td>
+                        <td>
+                            <ul>
+                                <li th:each="footnote : ${entry.value.footnotes}">
+                                    <span th:text="${footnote.code}">Code</span>:
+                                    <span th:text="${footnote.text}">Footnote</span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>

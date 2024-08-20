@@ -3,15 +3,15 @@ package com.bex.cpi_search.model;
 import java.util.List;
 
 /** Represents a data entry returned from the BLS API. */
-public final class Data {
+public final class DataPoint {
 
   /** The year for the data entry. */
   private String year;
 
-  /** The period for the data entry (e.g., month or quarter). */
+  /** The period for the data entry (month, formatted as M + month number). */
   private String period;
 
-  /** The name of the period (e.g., "January" or "Q1"). */
+  /** The name of the period (e.g., "January"). */
   private String periodName;
 
   /** Indicates whether the data is the latest available. */
@@ -42,7 +42,7 @@ public final class Data {
   }
 
   /**
-   * Gets the period for the data entry.
+   * Gets the period (month abbreviation) for the data entry.
    *
    * @return the period
    */
@@ -53,14 +53,14 @@ public final class Data {
   /**
    * Sets the period for the data entry.
    *
-   * @param periodValue the period to set
+   * @param periodValue the period (month abbreviation) to set
    */
   public void setPeriod(final String periodValue) {
     this.period = periodValue;
   }
 
   /**
-   * Gets the name of the period for the data entry.
+   * Gets the name of the period (month name) for the data entry.
    *
    * @return the period name
    */
@@ -69,7 +69,7 @@ public final class Data {
   }
 
   /**
-   * Sets the name of the period for the data entry.
+   * Sets the name of the period (month name) for the data entry.
    *
    * @param periodNameValue the period name to set
    */
@@ -129,5 +129,25 @@ public final class Data {
    */
   public void setFootnotes(final List<Footnote> footnotesList) {
     this.footnotes = footnotesList;
+  }
+
+  @Override
+  public String toString() {
+    return "Data{"
+        + "year='"
+        + year
+        + '\''
+        + ", period='"
+        + period
+        + '\''
+        + ", periodName='"
+        + periodName
+        + '\''
+        + ", value='"
+        + value
+        + '\''
+        + ", footnotes="
+        + footnotes
+        + '}';
   }
 }

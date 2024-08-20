@@ -1,55 +1,42 @@
 package com.bex.cpi_search.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository class for interacting with Redis to store and retrieve documents. This class handles
- * the saving and fetching of documents in a Redis hash using a combination of year and month as the
- * key.
+ * Generic repository class for interacting with Redis to store and retrieve objects.
+ *
+ * @param <K> the type of the hash key
+ * @param <V> the type of the hash value
  */
 @Repository
-public class RedisRepository {
+public class RedisRepository<K, V> {
 
-  /** RedisTemplate for performing operations on Redis. */
-  @Autowired private RedisTemplate<String, Object> redisTemplate;
+  @Autowired private RedisTemplate<String, V> redisTemplate;
 
-  /** Key used for storing documents in the Redis hash. */
   private static final String DOCUMENTS_KEY = "documents";
 
   /**
-   * Saves a document in Redis using a combination of year and month as the key.
+   * Saves a document in Redis using a hash.
    *
-   * @param year the year associated with the document
-   * @param month the month associated with the document
+   * @param key the key for the hash
    * @param document the document to be saved
    */
-  public void saveDocument(final String year, final String month, final String document) {
-    String key = generateKey(year, month);
-    redisTemplate.opsForHash().put(DOCUMENTS_KEY, key, document);
+  public void saveDocument(final K key, final V document) {
+    HashOperations<String, K, V> hashOps = redisTemplate.opsForHash();
+    hashOps.put(DOCUMENTS_KEY, key, document);
   }
 
   /**
-   * Retrieves a document from Redis based on the provided year and month.
+   * Retrieves a document from Redis based on the provided key.
    *
-   * @param year the year associated with the document
-   * @param month the month associated with the document
-   * @return the retrieved document as a String, or null if not found
+   * @param key the key for the hash
+   * @return the retrieved document, or null if not found
    */
-  public String getDocument(final String year, final String month) {
-    String key = generateKey(year, month);
-    return (String) redisTemplate.opsForHash().get(DOCUMENTS_KEY, key);
-  }
-
-  /**
-   * Generates a Redis key based on the year and month.
-   *
-   * @param year the year to be used in the key
-   * @param month the month to be used in the key
-   * @return a String representing the key in the format "year:month"
-   */
-  private String generateKey(final String year, final String month) {
-    return year + ":" + month;
+  public V getDocument(final K key) {
+    HashOperations<String, K, V> hashOps = redisTemplate.opsForHash();
+    return hashOps.get(DOCUMENTS_KEY, key);
   }
 }

@@ -1,6 +1,7 @@
 package com.bex.cpi_search.model;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Represents the response from the BLS (Bureau of Labor Statistics) API. This class contains the
@@ -8,6 +9,9 @@ import java.util.List;
  * API call.
  */
 public final class BLSApiResponse {
+
+  /** Logger for logging messages in this class. */
+  private static final Logger LOGGER = Logger.getLogger(BLSApiResponse.class.getName());
 
   /** The status of the API response, typically indicating success or failure. */
   private String status;
@@ -36,6 +40,7 @@ public final class BLSApiResponse {
    * @param statusValue the status to set, typically indicating success or failure
    */
   public void setStatus(final String statusValue) {
+    LOGGER.info("Setting status to: " + statusValue);
     this.status = statusValue;
   }
 
@@ -54,6 +59,7 @@ public final class BLSApiResponse {
    * @param responseTimeValue the response time to set, in milliseconds
    */
   public void setResponseTime(final int responseTimeValue) {
+    LOGGER.info("Setting responseTime to: " + responseTimeValue);
     this.responseTime = responseTimeValue;
   }
 
@@ -73,6 +79,7 @@ public final class BLSApiResponse {
    *     information
    */
   public void setMessage(final List<String> messageValue) {
+    LOGGER.info("Setting message to: " + messageValue);
     this.message = messageValue;
   }
 
@@ -91,6 +98,22 @@ public final class BLSApiResponse {
    * @param resultsValue the results to set, encapsulated in a {@link Results} object
    */
   public void setResults(final Results resultsValue) {
+    LOGGER.info("Setting results to: " + resultsValue);
     this.results = resultsValue;
+  }
+
+  @Override
+  public String toString() {
+    return "BLSApiResponse{"
+        + "status='"
+        + status
+        + '\''
+        + ", responseTime="
+        + responseTime
+        + ", message="
+        + message
+        + ", results="
+        + results
+        + '}';
   }
 }
