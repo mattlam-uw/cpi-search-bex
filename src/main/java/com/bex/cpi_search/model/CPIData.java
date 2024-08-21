@@ -21,8 +21,8 @@ public class CPIData {
   @JsonProperty("cpiValue")
   private String cpiValue;
 
-  @JsonProperty("footnotes")
-  private List<Footnote> footnotes;
+  @JsonProperty("notes")
+  private List<String> notes;
 
   // Getters and setters
 
@@ -58,11 +58,11 @@ public class CPIData {
     this.cpiValue = cpiValue;
   }
 
-  public List<Footnote> getFootnotes() {
-    return footnotes;
+  public List<String> getNotes() {
+    return this.notes;
   }
 
-  public void setFootnotes(final List<Footnote> footnotes) {
-    this.footnotes = footnotes;
+  public void setNotes(final List<String> notes) {
+    this.notes = notes;
   }
 }

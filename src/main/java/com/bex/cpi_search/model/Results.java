@@ -36,9 +36,6 @@ public final class Results {
 
   @Override
   public String toString() {
-    return "Results{"
-        + "series="
-        + series
-        + '}';
+    return "Results{" + "series=" + series + '}';
   }
 }
