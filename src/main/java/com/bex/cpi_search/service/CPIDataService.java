@@ -60,22 +60,21 @@ public class CPIDataService {
     log.info("Not all requested data found in cache. Fetching data from API...");
 
     boolean cacheSuccess = this.fetchAndCacheFromAPI(year, seriesIds);
-    if(cacheSuccess){
-        // Retrieve data from cache again
-        Map<String, CPIData> finalResult = fetchCachedData(year, month, seriesIds);
+    if (cacheSuccess) {
+      // Retrieve data from cache again
+      Map<String, CPIData> finalResult = fetchCachedData(year, month, seriesIds);
 
-        // Check if all requested data is now available
-        if (finalResult.size() != seriesIds.size()) {
-          log.error("Data not found for all requested series IDs after fetching from API.");
-          throw new RuntimeException("Data not found for all requested series IDs.");
-        }
+      // Check if all requested data is now available
+      if (finalResult.size() != seriesIds.size()) {
+        log.error("Data not found for all requested series IDs after fetching from API.");
+        throw new RuntimeException("Data not found for all requested series IDs.");
+      }
 
-        log.info("Successfully retrieved CPI data for series IDs: {}", finalResult.keySet());
-        return finalResult;
-    } else{
+      log.info("Successfully retrieved CPI data for series IDs: {}", finalResult.keySet());
+      return finalResult;
+    } else {
       throw new IOException("Failed to fetch data from API and cache it.");
     }
-    
   }
 
   /**
@@ -215,7 +214,7 @@ public class CPIDataService {
     log.info("Extarcting cpiData from results: " + results);
     // Iterate through each Series
     for (Series series : results.getSeries()) {
-      log.info("Series: "+ series);
+      log.info("Series: " + series);
       if (series.getData() == null) {
         log.warn("No data found for series ID: {}", series.getSeriesID());
         continue;
